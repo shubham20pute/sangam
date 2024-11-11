@@ -1,5 +1,5 @@
 
-import smtplib
+import smtplib, threading
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -40,3 +40,8 @@ def send_email(recipient_email, html_content, subject):
             return "Email sent successfully!"
     except Exception as e:
         return f"Error sending email: {e}"
+    
+
+def send_email_in_background(recipient_email, html_content, subject):
+    email_thread = threading.Thread(target=send_email, args=(recipient_email, html_content, subject))
+    email_thread.start()

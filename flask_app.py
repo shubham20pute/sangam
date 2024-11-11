@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from utils import *
+import uuid
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -11,6 +12,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize the database
 db = SQLAlchemy(app)
+
+def generate_uuid():
+    return str(uuid.uuid4()) 
 
 # Define the User model
 class User(db.Model):
@@ -24,6 +28,7 @@ class User(db.Model):
     interest = db.Column(db.String(50))
     experience = db.Column(db.String(50))
     business_info = db.Column(db.Text)
+    code = db.Column(db.String(40), unique=True, nullable=False, default=generate_uuid)
 
     def __repr__(self):
         return f'<User {self.name}>'
@@ -61,28 +66,53 @@ def index():
         db.session.add(new_user)
         db.session.commit()
 
-        user_id = new_user.id
+        code = new_user.code
 
         flash('Form submitted successfully!', 'success')
         subject = "Congratulations! You've won a Free Voucher!"
-        html_content = render_template('voucher.html')
+        link = request.host_url + "voucher/"+str(code)
+        html_content = render_template('voucher_link.html', link = link)
 
-        send_email(email,html_content,subject)
+        send_email_in_background(email,html_content,subject)
 
-        return render_template('voucher.html', id = user_id, name = name)
+        image_url = request.host_url + "static/voucher_bg.png" # url_for('static', filename='voucher_bg.png')
+        #html = render_template('voucher.html', ref_id = 420, name = "Shonu eye", img = image_url)
+
+        return render_template('voucher.html', id =new_user.id, name = name, img = image_url)
         # return redirect(url_for('index'))
 
     return render_template('index.html')
 
 
+@app.route('/voucher/<token>', methods=['GET'])
+def voucher(token):
+    image_url = request.host_url + "static/voucher_bg.png" # url_for('static', filename='voucher_bg.png')
+
+    user = User.query.filter_by(code=token).first()
+
+    if user:
+
+        html = render_template('voucher.html', id = user.id, name = user.name, img = image_url)
+        # html = render_template('voucher_link.html', ref_id = 420, name = "Shonu eye", img = image_url)
+
+        #send_email("shubhamvispute055@gmail.com",html,"Testing")
+        return html
+    else:
+        return "It looks like link is invalid...",500
+    
+
 @app.route('/test', methods=['GET', 'POST'])
 def test():
     image_url = request.host_url + "static/voucher_bg.png" # url_for('static', filename='voucher_bg.png')
-    html = render_template('voucher.html', ref_id = 420, name = "Shonu eye", img = image_url)
-    send_email("shubhamvispute055@gmail.com",html,"Testing")
+    #html = render_template('voucher.html', ref_id = 420, name = "Shonu eye", img = image_url)
+    html = render_template('voucher_link.html', ref_id = 420, name = "Shonu eye", img = image_url)
+
+    #send_email("shubhamvispute055@gmail.com",html,"Testing")
     return html
 
-if __name__ == '__main__':
-    with app.app_context():
+
+with app.app_context():
         db.create_all()  # Create tables if they don't exist
+
+if __name__ == '__main__':
     app.run(debug=True)

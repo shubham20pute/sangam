@@ -125,33 +125,40 @@
 
 <script>
   // Function to toggle the "Are you interested in" dropdown and business info field
-  function toggleFieldsBasedOnUserType() {
-    var userType = document.getElementById("userType").value;
-    var interestGroup = document.getElementById("interest-group");
-    var businessInfoGroup = document.getElementById("business-info-group");
+// Function to toggle the "Are you interested in" dropdown and business info field
+function toggleFieldsBasedOnUserType() {
+  var userType = document.getElementById("userType").value;
+  var interestGroup = document.getElementById("interest-group");
+  var businessInfoGroup = document.getElementById("business-info-group");
+  var interestSelect = document.getElementById("interest");
 
-    // Hide both sections initially
-    interestGroup.classList.add("hidden");
-    businessInfoGroup.classList.add("hidden");
+  // Hide both sections initially
+  interestGroup.classList.add("hidden");
+  businessInfoGroup.classList.add("hidden");
 
-    if (userType === "student") {
-      interestGroup.classList.remove("hidden");  // Show "Are you interested in" dropdown
-    } else if (userType === "startup_entrepreneur" || userType === "business_owner") {
-      businessInfoGroup.classList.remove("hidden");  // Show "Business Information" input
-    }
+  // Reset required attribute
+  interestSelect.removeAttribute('required');  // Reset 'required' when it's hidden
+
+  if (userType === "student") {
+    interestGroup.classList.remove("hidden");  // Show "Are you interested in" dropdown
+    interestSelect.setAttribute('required', 'required');  // Set 'required' when it's visible
+  } else if (userType === "startup_entrepreneur" || userType === "business_owner") {
+    businessInfoGroup.classList.remove("hidden");  // Show "Business Information" input
   }
+}
 
-  // Function to toggle the experience field based on "Are you interested in" selection
-  function toggleExperienceField() {
-    var interest = document.getElementById("interest").value;
-    var experienceGroup = document.getElementById("experience-group");
+// Function to toggle the experience field based on "Are you interested in" selection
+function toggleExperienceField() {
+  var interest = document.getElementById("interest").value;
+  var experienceGroup = document.getElementById("experience-group");
 
-    if (interest !== "") {
-      experienceGroup.classList.remove("hidden");  // Show experience field
-    } else {
-      experienceGroup.classList.add("hidden");  // Hide experience field
-    }
+  if (interest !== "") {
+    experienceGroup.classList.remove("hidden");  // Show experience field
+  } else {
+    experienceGroup.classList.add("hidden");  // Hide experience field
   }
+}
+
 
   // Handle form submission
   function handleSubmit(event) {
