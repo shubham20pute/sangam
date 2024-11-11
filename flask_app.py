@@ -77,7 +77,8 @@ def index():
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
-    html = render_template('voucher.html', ref_id = 420, name = "Shonu eye")
+    image_url = request.host_url + "static/voucher_bg.png" # url_for('static', filename='voucher_bg.png')
+    html = render_template('voucher.html', ref_id = 420, name = "Shonu eye", img = image_url)
     send_email("shubhamvispute055@gmail.com",html,"Testing")
     return html
 
