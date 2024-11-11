@@ -1,3 +1,4 @@
 instance
 sangam.zip
 venv
+__pycache__/
