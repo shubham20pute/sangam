@@ -4,80 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voucher Email</title>
-    <style>
-        /* Setting up the page */
-        body {
-            margin: 0;
-            padding-left: 5vw;
-            padding-right: 5vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;  /* Horizontally center the div */
-            align-items: center;      /* Vertically center the div */
-            background-color: #f4f4f4; /* Light background for fallback */
-        }
-
-        /* Main div for background image */
-        .main {
-            background-image: url("{{img}}");
-        
-            background-size: cover;
-            background-position: center;
-            width: 100%; /* Width set to 80% of the viewport height */
-            background-repeat: no-repeat;
-            position: relative;
-            border-radius: 10px; /* Optional: Rounded corners */
-
-            /* Maintain the 1290x509 aspect ratio */
-            padding-bottom: 39.46%; /* Aspect ratio calculated as (509 / 1290 * 100) */
-        }
-
-        /* Content container to center text within the main div */
-        .content {
-            position: absolute;
-            top: 14%;
-            left: 60%;
-            transform: translate(-50%, -50%); /* Center the content horizontally and vertically */
-            display: flex;
-            flex-direction: column;
-            align-items: start;
-            justify-content: center;
-            z-index: 10; /* Ensure it's on top of the background image */
-            color: #fff;
-            font-family: Arial, sans-serif;
-        }
-
-        /* Styling the text */
-        .ref-id, .user-name {
-            font-size: 2vw; /* Responsive font size using vw */
-            
-            margin: .3vw 0;
-        }
-
-        /* Styling for the button */
-        .voucher a {
-            background-color: #ff6347;
-            padding: 12px 24px;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 1.5vw; /* Responsive button font size using vw */
-            margin-top: 10px;
-            display: inline-block;
-        }
-
-        
-    </style>
 </head>
-<body>
-    <div class="main">
+<body style="margin: 0; padding-left: 5vw; padding-right: 5vw; height: 100vh; display: flex; justify-content: center; align-items: center; background-color: #f4f4f4;">
+    <div class="main" style="background-image: url('{{img}}'); background-size: cover; background-position: center; width: 100%; background-repeat: no-repeat; position: relative; border-radius: 10px; padding-bottom: 39.46%;">
+
         <!-- Content centered inside the .main div -->
-        <div class="content">
-            <div class="ref-id">Ref ID: <b>#{{ id }}</b></div>
-            <div class="user-name">Name: <b>{{ name }}</b></div>
+        <div class="content" style="position: absolute; top: 14%; left: 60%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: start; justify-content: center; z-index: 10; color: #fff; font-family: Arial, sans-serif;">
+            <div class="ref-id" style="font-size: 2vw; margin: .3vw 0;">Ref ID: <b>#{{ id }}</b></div>
+            <div class="user-name" style="font-size: 2vw; margin: .3vw 0;">Name: <b>{{ name }}</b></div>
 
             <!-- Button for actions -->
-            <!-- <a href="" class="redeem-button">Redeem Now</a> -->
+            <!-- <a href="" class="redeem-button" style="background-color: #ff6347; padding: 12px 24px; color: white; text-decoration: none; border-radius: 5px; font-size: 1.5vw; margin-top: 10px; display: inline-block;">Redeem Now</a> -->
         </div>
     </div>
 </body>
