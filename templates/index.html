@@ -43,7 +43,9 @@
 <body>
 
 <div class="container form-container">
-  <h2 class="text-center">User Information</h2>
+
+  <img src="../static/digilife logo.png" style="display: block; margin: 0 auto; width: 30vw;" alt="">
+  <h2 class="text-center"> Internship Enrollment at Digilifestyle</h2>
   <form method="post" enctype="multipart/form-data">
     <div class="form-group">
       <label for="name">Name</label>
@@ -71,9 +73,9 @@
       <label for="userType">Are you:</label>
       <select class="form-control" id="userType" name="userType" onchange="toggleFieldsBasedOnUserType()" required>
         <option value="">Select an option</option>
-        <option value="student">Student</option>
-        <option value="startup_entrepreneur">Startup Entrepreneur</option>
-        <option value="business_owner">Business Owner</option>
+        <option value="student">Graduated</option>
+        <option value="startup_entrepreneur">Pursuing degree</option>
+        <option value="business_owner">Working Professional</option>
       </select>
     </div>
 
@@ -83,12 +85,17 @@
       <select class="form-control" id="interest" name="interest" onchange="toggleExperienceField()" required>
         <option value="">Select an option</option>
         <option value="digital_marketing">Digital Marketing</option>
-        <option value="Automation">Automation</option>
+        <option value="Automation">AI & Gen-AI</option>
         <option value="cyber_security">Cyber Security</option>
         <option value="ds">Data Science/ Machine Learning</option>
-        <option value="analytics">Data Analytics</option>
-        <option value="full_stack">Full Stack</option>
+        <option value="other">Other</option>
       </select>
+    </div>
+
+
+    <div class="form-group hidden" id="business-info-group">
+      <label for="businessInfo">Tell us </label>
+      <textarea class="form-control" id="businessInfo" name="businessInfo" placeholder="Provide information about the domain you are interested in"></textarea>
     </div>
 
     <!-- Experience field, hidden by default -->
@@ -102,10 +109,7 @@
     </div>
 
     <!-- Business info field, hidden by default -->
-    <div class="form-group hidden" id="business-info-group">
-      <label for="businessInfo">Business Information</label>
-      <textarea class="form-control" id="businessInfo" name="businessInfo" placeholder="Provide information about your business"></textarea>
-    </div>
+    
 
     <button type="submit" class="btn btn-primary btn-block">Submit</button>
   </form>
@@ -139,11 +143,9 @@ function toggleFieldsBasedOnUserType() {
   // Reset required attribute
   interestSelect.removeAttribute('required');  // Reset 'required' when it's hidden
 
-  if (userType === "student") {
+  if (userType !== "") {
     interestGroup.classList.remove("hidden");  // Show "Are you interested in" dropdown
     interestSelect.setAttribute('required', 'required');  // Set 'required' when it's visible
-  } else if (userType === "startup_entrepreneur" || userType === "business_owner") {
-    businessInfoGroup.classList.remove("hidden");  // Show "Business Information" input
   }
 }
 
@@ -151,15 +153,29 @@ function toggleFieldsBasedOnUserType() {
 function toggleExperienceField() {
   var interest = document.getElementById("interest").value;
   var experienceGroup = document.getElementById("experience-group");
+  var businessInfoGroup = document.getElementById("business-info-group");
 
   if (interest !== "") {
     experienceGroup.classList.remove("hidden");  // Show experience field
   } else {
     experienceGroup.classList.add("hidden");  // Hide experience field
   }
+
+
+  businessInfoGroup.classList.add("hidden");
+
+  console.log(interest)
+  if (interest === "other") {
+     businessInfoGroup.classList.remove("hidden");  // Show "Business Information" input
+   }
+
 }
 
 
+
+// else if (userType === "startup_entrepreneur" || userType === "business_owner") {
+//     businessInfoGroup.classList.remove("hidden");  // Show "Business Information" input
+//   }
   // Handle form submission
   function handleSubmit(event) {
     event.preventDefault();
